@@ -1,14 +1,16 @@
 package com.dailyhosseinwork.dreamshops.service.product;
 
 import com.dailyhosseinwork.dreamshops.model.Product;
+import com.dailyhosseinwork.dreamshops.request.AddProductRequest;
+import com.dailyhosseinwork.dreamshops.request.ProductUpdateRequest;
 
 import java.util.List;
 
 public interface IProductService {
-    Product addProduct (Product product);
+    Product addProduct (AddProductRequest product);
     Product getProductById(Long id);
     void deleteProductById(Long id);
-    void updateProductById(Product product, Long productId);
+    Product updateProductById(ProductUpdateRequest product, Long productId);
     List<Product> getAllProducts();
 
     List<Product> getProductsByCategory(Long category);
@@ -20,4 +22,6 @@ public interface IProductService {
     List<Product>getProductsByName(String name);
     List<Product>getProductsByBrandAndName(String category,String name);
     Long countProductsByBrandAndName(String brand, String name);
+
+
 }

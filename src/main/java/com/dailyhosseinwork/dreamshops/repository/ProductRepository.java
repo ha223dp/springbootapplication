@@ -1,4 +1,4 @@
-package com.dailyhosseinwork.dreamshops.service.product;
+package com.dailyhosseinwork.dreamshops.repository;
 
 
 import com.dailyhosseinwork.dreamshops.model.Product;
@@ -12,4 +12,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByBrand(String brand);
 
   List<Product> findByCategoryNameAndBrand(String category, String brand);
+
+  List<Product> findByName(String name);
+
+  List<Product> findByBrandAndName(String brand, String name);
+
+  Long countByBrandAndName(String brand, String name);
+
 }
