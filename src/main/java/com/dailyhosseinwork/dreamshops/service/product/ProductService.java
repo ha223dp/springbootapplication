@@ -1,6 +1,7 @@
 package com.dailyhosseinwork.dreamshops.service.product;
 
 import com.dailyhosseinwork.dreamshops.exceptions.ProductNotFoundException;
+import com.dailyhosseinwork.dreamshops.exceptions.ResourceNotFoundException;
 import com.dailyhosseinwork.dreamshops.model.Category;
 import com.dailyhosseinwork.dreamshops.model.Product;
 import com.dailyhosseinwork.dreamshops.repository.CategoryRepository;
@@ -46,20 +47,23 @@ public class ProductService implements IProductService{
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).
-                orElseThrow(()-> new ProductNotFoundException("Product not found!"));
+                orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
     public void deleteProductById(Long id) {
-    productRepository.findById(id).ifPresentOrElse(productRepository::delete,()-> {throw new ProductNotFoundException("Product not found!");});
+    productRepository.findById(id).ifPresentOrElse(productRepository::delete,()-> {throw new ResourceNotFoundException("Product not found!");});
     }
 
     @Override
-    public Product updateProductById(ProductUpdateRequest request, Long productId) {
-    return productRepository.findById(productId).map(existingProduct->updateExistingProduct(existingProduct,request)).
-        map(productRepository:: save)
-        .orElseThrow(()->new ProductNotFoundException("Product not found!"));
+    public Product updateProduct(ProductUpdateRequest request, Long productId) {
+    return productRepository.findById(productId)
+            .map(existingProduct->updateExistingProduct(existingProduct,request))
+            .map(productRepository:: save)
+        .orElseThrow(()->new ResourceNotFoundException("Product not found!"));
     }
+
+
 private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request){
     existingProduct.setName(request.getName());
     existingProduct.setBrand(request.getBrand());
@@ -112,4 +116,6 @@ private Product updateExistingProduct(Product existingProduct, ProductUpdateRequ
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand,name);
     }
+
+
 }
